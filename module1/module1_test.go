@@ -8,10 +8,11 @@ import (
 	"os"
 	"strings"
 	"testing"
+	"fmt"
 )
 
 func TestModule1CheckEnvGOOS(t *testing.T) {
-	found := OpenFileAndFindNthString("module1.txt", 0, "GOOS")
+	found := OpenFileAndFindNthString("module1.txt", 13, "GOOS")
 
 	if !found {
 		t.Errorf("'go env' does not work as expected")
@@ -20,6 +21,7 @@ func TestModule1CheckEnvGOOS(t *testing.T) {
 
 func TestModule1CheckEnvGOOSInJson(t *testing.T) {
 	content, _ := ioutil.ReadFile("module1.json")
+	fmt.Printf("File contents: %s", content)
 	var data map[string]interface{}
 
 	err := json.Unmarshal(content, &data)
@@ -53,6 +55,7 @@ func OpenFileAndFindString(filename string, expected string) bool {
 			continue
 		}
 
+		fmt.Printf("trimmed = %s", trimmed)
 		// matching logic
 		if trimmed == expected {
 			return true
@@ -64,6 +67,7 @@ func OpenFileAndFindString(filename string, expected string) bool {
 
 // OpenFileAndFindNthString opens a file, look for Nth string splitted by a '=', and return if given expected string is found or not
 func OpenFileAndFindNthString(filename string, nth int, expected string) bool {
+	
 	f, err := os.Open(filename)
 	if err != nil {
 		log.Fatal(err)
